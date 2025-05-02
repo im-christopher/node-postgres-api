@@ -1,4 +1,4 @@
-name: deploy-pg-api
+name: deploy-pg-api_
 
 on:
   push:
