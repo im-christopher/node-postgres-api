@@ -1,4 +1,4 @@
-name: deploy-pg-api_
+name: deploy-pg-api
 
 on:
   push:
@@ -12,17 +12,18 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+
       - run: echo 'hello world ...'
       - run: ls -la
       - run: touch .env
-      - run: echo 'DEV_DATABASE_URL=${{secrets.PG_CONN}}'  >> .env
+      - run: echo "DEV_DATABASE_URL=${{ secrets.PG_CONN }}" >> .env
       - run: cat .env
-      - run: docker build -t adsoft/pg-restapi:${{github.sha}} .
+
+      - run: docker build -t adsoft/pg-restapi:${{ github.sha }} .
       - run: docker images
-   
+
       - name: 🔑 Iniciar sesión en Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-        
-      - name: docker push
-        run:  docker push ${{ secrets.DOCKER_USER}}/pg-restapi:${{github.sha}}  
+      - name: 🚀 Subir imagen a Docker Hub
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/pg-restapi:${{ github.sha }}
