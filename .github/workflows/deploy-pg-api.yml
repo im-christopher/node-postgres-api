@@ -20,11 +20,9 @@ jobs:
       - run: docker build -t adsoft/pg-restapi:${{github.sha}} .
       - run: docker images
    
-      - name: docker login
-        env:
-          DOCKER_USER: ${{secrets.DOCKER_USER}}
-          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-        run:  docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+      - name: 🔑 Iniciar sesión en Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
         
       - name: docker push
         run:  docker push ${{ secrets.DOCKER_USER}}/pg-restapi:${{github.sha}}  
